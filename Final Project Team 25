@@ -1,0 +1,110 @@
+import time
+menu = {
+    "cafe latte":15,
+    "filtre kahve":12,
+    "flat white":20,
+    "americano":16,
+    "frappe":19,
+    "espresso":18,
+    "cappuccino":24,
+    "cold brew":15,
+    "mocha":23,
+    "white chocolate mocha":24
+}
+
+urun_stok={
+    "cafe latte":10,
+    "filtre kahve":10,
+    "flat white":10,
+    "americano":10,
+    "frappe":10,
+    "espresso":10,
+    "cappuccino":10,
+    "cold brew":10,
+    "mocha":10,
+    "white chocolate mocha":10,
+    "bardak":100
+}
+
+class kahve_makinesi():
+
+  def __init__(self, kahve_makinesinin_durumu = "Açık"):
+     self.kahve_makinesinin_durumu = kahve_makinesinin_durumu
+
+  def kahve_makinesi_ac(self):
+      if (self.kahve_makinesinin_durumu == "Açık"):
+            print("Kahve makinesi zaten açık....")
+      else:
+        print("Kahve makinesi açılıyor...")
+        self.kahve_makinesinin_durumu = "Açık"
+
+  def kahve_makinesi_kapat(self):
+      if (self.kahve_makinesinin_durumu == "Kapalı"):
+            print("Kahve makinesi zaten kapalı....")
+      else:
+        print("Kahve makinesi kapatılıyor...")
+        print("TEŞEKKÜR EDERİZ!")
+        self.kahve_makinesinin_durumu = "Kapalı"
+
+
+
+def display_menu():
+    print("-----YETCAFE MENÜ-----")
+    print(f"Mevcut bardak:{urun_stok['bardak']}\n")
+    for item in list(menu.keys()):
+      print(f"{item.upper():<10} : {menu[item]} TL (stok: {urun_stok[item]})")
+def tek_urun_fiyat_hesaplama(urun, adet):
+    assert adet >= 0 , "Ürün adedi 0 ve  0'dan küçük olamaz."
+    if urun not in list(menu.keys()):
+      return None
+    else:
+      return menu[urun] * adet
+def satin_alma():
+    display_menu()
+    print("Lütfen satın almak istediğiniz ürünü giriniz. Çıkış yapmak için '0'ı tuşlayınız: ")
+
+    satin_alinan_urunler = []
+    satin_alma_adedi = []
+
+    son_fiyat = 0
+    while 1:
+        eklenecek_urun = input("Eklemek istediğiniz ürünü giriniz. Çıkmak için '0'ı tuşlayınız: ")
+        if eklenecek_urun == "0":
+          print("Fiş kaydediliyor...")
+          break
+          
+        ekleme_adedi = int(input("Eklemek istediğiniz miktarı giriniz: "))
+        if urun_stok[eklenecek_urun]>=ekleme_adedi and urun_stok["bardak"]>=ekleme_adedi:
+          urun_stok[eklenecek_urun]-=ekleme_adedi
+          urun_stok["bardak"]-=ekleme_adedi
+        elif urun_stok[eklenecek_urun] 5:
+      print("Yanlış bir tercih yaptınız. Lütfen tekrar deneyiniz.")
+    elif program == 0:
+      makine.kahve_makinesi()
+    elif program == 4:
+      makine.kahve_makinesi_kapat()
+      break
+    elif program == 1:
+      makine.kahve_makinesi_ac()
+    elif program == 2:
+      display_menu()
+    elif program == 3:
+      satin_alma_ucreti, satin_alinan_urunler, satin_alma_adedi = satin_alma()
+      with open("kasa.txt","a") as f:
+        f.write(str(time.ctime(time.time())))
+        f.write("\n")
+        f.write(','.join(map(str, satin_alinan_urunler)))
+        f.write("\n")
+        f.write(','.join(map(str, satin_alma_adedi)))
+        f.write("\n")
+        f.write(f"Toplam: {satin_alma_ucreti}")
+        f.write("\n")
+        f.write("*"*20)
+        f.write("\n")
+      cikis_kontrol = input("Başka bir işlem yapmak istiyor musunuz? (evet-hayır): ")
+      if cikis_kontrol == "evet":
+        pass
+      else:
+        print("\n\nBİZİ TERCİH ETTİĞİNİZ İÇİN TEŞEKKÜR EDERİZ!")
+        break
+main()
